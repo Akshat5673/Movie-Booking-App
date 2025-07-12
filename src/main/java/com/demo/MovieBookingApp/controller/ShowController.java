@@ -1,10 +1,13 @@
 package com.demo.MovieBookingApp.controller;
 
+import com.demo.MovieBookingApp.dto.BulkUploadShowsResponseDto;
 import com.demo.MovieBookingApp.dto.ShowDto;
 import com.demo.MovieBookingApp.payload.ApiResponse;
 import com.demo.MovieBookingApp.service.ShowService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/shows")
 @RequiredArgsConstructor
 public class ShowController {
-
-    @Autowired
-    private ShowService showService;
-
+    private final ShowService showService;
 
     @GetMapping
     public ResponseEntity<List<ShowDto>> getAllShows() {
@@ -49,14 +49,15 @@ public class ShowController {
     }
 
     @PostMapping
-    public ResponseEntity<ShowDto> createShow(@RequestBody ShowDto dto) {
+    public ResponseEntity<ShowDto> createShow(@RequestBody @Valid ShowDto dto) {
         ShowDto created = showService.createShow(dto);
         return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ShowDto> updateShow(@PathVariable Long id, @RequestBody ShowDto dto) {
-        return ResponseEntity.ok(showService.updateShow(id, dto));
+    public ResponseEntity<ShowDto> updateShow(@PathVariable Long id, @RequestBody @Valid ShowDto dto) {
+        ShowDto updated = showService.updateShow(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -65,4 +66,10 @@ public class ShowController {
         return ResponseEntity.ok(new ApiResponse("Show deleted successfully", true));
     }
 
+    @PostMapping("/bulk")
+    public ResponseEntity<BulkUploadShowsResponseDto> uploadBulk(
+            @RequestBody List<@Valid ShowDto> dtos) {
+        BulkUploadShowsResponseDto result = showService.bulkUploadShows(dtos);
+        return new ResponseEntity<>(result, HttpStatus.MULTI_STATUS);
+    }
 }
