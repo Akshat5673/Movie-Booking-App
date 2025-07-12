@@ -1,5 +1,6 @@
 package com.demo.MovieBookingApp.service;
 
+import com.demo.MovieBookingApp.dto.BulkUploadTheatresResponseDto;
 import com.demo.MovieBookingApp.dto.TheatreDto;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface TheatreService {
     TheatreDto createTheatre(TheatreDto theatreDto);
     TheatreDto updateTheatre(Long id, TheatreDto theatreDto);
     void deleteTheatre(Long id);
+    BulkUploadTheatresResponseDto bulkUploadTheatres(List<TheatreDto> theatres);
 }

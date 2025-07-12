@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TheatreRepository extends JpaRepository<Theatre,Long> {
     List<Theatre> findByScreenType(String screenType);
+    boolean existsByTheatreNameAndTheatreLocation(String theatreName, String theatreLocation);
 }
