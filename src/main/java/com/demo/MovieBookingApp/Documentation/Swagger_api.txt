@@ -528,7 +528,7 @@
         "tags": [
           "theatre-controller"
         ],
-        "operationId": "createTheatre",
+        "operationId": "create",
         "requestBody": {
           "content": {
             "application/json": {
@@ -546,6 +546,39 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TheatreDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/theatre/bulk": {
+      "post": {
+        "tags": [
+          "theatre-controller"
+        ],
+        "operationId": "bulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TheatreDto"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkUploadTheatresResponseDto"
                 }
               }
             }
@@ -597,6 +630,39 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ShowDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shows/bulk": {
+      "post": {
+        "tags": [
+          "show-controller"
+        ],
+        "operationId": "uploadBulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ShowDto"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkUploadShowsResponseDto"
                 }
               }
             }
@@ -1316,6 +1382,40 @@
             "type": "string"
           },
           "seatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkUploadTheatresResponseDto": {
+        "type": "object",
+        "properties": {
+          "successful": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TheatreDto"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkUploadShowsResponseDto": {
+        "type": "object",
+        "properties": {
+          "successful": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShowDto"
+            }
+          },
+          "errors": {
             "type": "array",
             "items": {
               "type": "string"
